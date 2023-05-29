@@ -27,6 +27,7 @@ async function run() {
     client.connect();
     const menuCollection = client.db("bistroDB").collection("menu");
     const reviewsCollection = client.db("bistroDB").collection("reviews");
+    const cartCollection = client.db("bistroDB").collection("carts");
 
     app.get('/menu', async(req, res) =>{
         const result = await menuCollection.find().toArray();
@@ -36,6 +37,14 @@ async function run() {
         const result = await reviewsCollection.find().toArray();
         res.send(result);
     })
+
+    // cart collections
+    app.post('/carts', async (req, res) => {
+      const item = req.body;
+      console.log(item);
+      const result = await cartCollection.insertOne(item);
+      res.send(result);
+    }) 
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -57,3 +66,27 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Bistro boss is sitting on port ${port}`);
 })
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * --------------------------------
+ *      NAMING CONVENTION
+ * --------------------------------
+ * users : userCollection
+ * app.get('/users')
+ * app.get('/users/:id')
+ * app.post('/users')
+ * app.patch('/users/:id')
+ * app.put('/users/:id')
+ * app.delete('/users/:id')
+*/
